@@ -1,10 +1,12 @@
-<?php require_once(__DIR__ . "/partials/nav.php"); ?>
 <form method="POST">
+<?php require_once(__DIR__ . "/partials/nav.php"); ?>
+<div style="background: #dbcbbd; font-size: 20px; padding: 10px; border: 1px solid lightgray; margin: 10px;">
     <label style="color: #290001" for="email">Email:</label>
     <input type="email" id="email" name="email" required/>
     <label style="color: #290001" for="p1">Password:</label>
     <input type="password" id="p1" name="password" required/>
     <input type="submit" name="login" value="Login"/>
+</div>
 </form>
 
 <?php

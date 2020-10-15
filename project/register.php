@@ -1,5 +1,5 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
-
+<div style="background: #dbcbbd; font-size: 20px; padding: 10px; border: 1px solid lightgray; margin: 10px;">
 <?php
 if (isset($_POST["register"])) {
     $email = null;
@@ -80,3 +80,4 @@ if (!isset($username)) {
     <input type="password" id="p2" name="confirm" required/>
     <input type="submit" name="register" value="Register"/>
 </form>
+</div>

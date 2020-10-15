@@ -1,8 +1,14 @@
 /* design intentionally made horrible to see who doesn't change it*/
 body {
-    background-color: #dbcbbd;
+    background-image: url(https://art.trendtoday.net/wp-content/uploads/2020/03/1583702589_Aesthetic-Wallpaper-Fall-Wallpaper-Aesthetic-Computer-3D-Wallpapers.jpg);
     font-family: monospace;
     font-size: 1.5em;
+}
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }
 
 ul[class="nav"]{
