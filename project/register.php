@@ -31,11 +31,11 @@ if (isset($_POST["register"])) {
     if (!isset($email) || !isset($password) || !isset($confirm)) {
         $isValid = false;
     }
-    if(strlen($password)<5){
+    if(strlen($password)<=5){
         flash("Password needs to be at least 5 characters and less than 60 characters long");
         $isValid = false;
     }
-    if(strlen($username)<5){
+    if(strlen($username)<=5){
         flash("Username must be more than 5 characters long");
         $isValid = false;
     }

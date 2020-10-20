@@ -59,8 +59,12 @@ if (isset($_POST["saved"])) {
             //for now we can just stop the rest of the update
             $isValid = false;
         }
-        else {
+        else if(strlen($username>=5) {
             $newUsername = $username;
+        }
+        else{
+            flash("Username must be at least 5 characters long.");
+            $isValid = false;
         }
     }
     if ($isValid) {
@@ -74,20 +78,39 @@ if (isset($_POST["saved"])) {
         }
         //password is optional, so check if it's even set
         //if so, then check if it's a valid reset request
-        if (!empty($_POST["password"]) && !empty($_POST["confirm"])) {
-            if ($_POST["password"] == $_POST["confirm"]) {
-                $password = $_POST["password"];
-                $hash = password_hash($password, PASSWORD_BCRYPT);
-                //this one we'll do separate
-                $stmt = $db->prepare("UPDATE Users set password = :password where id = :id");
-                $r = $stmt->execute([":id" => get_user_id(), ":password" => $hash]);
-                if ($r) {
-                    flash("Reset Password");
+        if (!empty($_POST["password"]) && !empty($_POST["confirm"] & !empty($_POST["current"])) {
+            $current = $POST["current"];
+            $stmt = $db->prepare("SELECT password from Users WHERE id = :userid");
+            $stmt->execute([":userid" => get_user_id()]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            if($result && isset($result["password"];{
+                $newHash = $result["password"];
+                if(password_verify($current, $newHash)){
+                    if($POST["password"]== $_POST["confirm"]){
+                        if(strlen($_POST["password"])>=5){
+
+                           $password = $_POST["password"];
+                           $hash = password_hash($password, PASSWORD_BCRYPT);
+                           $stmt = $db->prepare("UPDATE Users set password = :password where id = :id");
+                           $r = $stmt->execute([":id" => get_user_id(), ":password" => $hash]);
+                              if ($r) {
+                              flash("Reset Password");
+                       }
+                       else {
+                              flash("Error resetting password");
+                      }
+                   }
+                else if(strlen($_POST["password"])<5){
+                    flash("Password must be at least 5 letters");
                 }
-                else {
-                    flash("Error resetting password");
+                else{
+                    flash("Passwords do not match");
+                }
                 }
             }
+            else{
+               flash("Please input the correct current password."); 
+           }
         }
 //fetch/select fresh data in case anything changed
         $stmt = $db->prepare("SELECT email, username from Users WHERE id = :id LIMIT 1");
