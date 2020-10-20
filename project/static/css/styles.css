@@ -1,6 +1,5 @@
-/* design intentionally made horrible to see who doesn't change it*/
 body {
-    background-image: url(https://art.trendtoday.net/wp-content/uploads/2020/03/1583702589_Aesthetic-Wallpaper-Fall-Wallpaper-Aesthetic-Computer-3D-Wallpapers.jpg);
+    background-image: url(https://img.freepik.com/free-vector/autumn-patterned-background_53876-93904.jpg?size=626&ext=jpg&ga=GA1.2.1468813500.1600560000);
     font-family: monospace;
     font-size: 1.5em;
 }
@@ -56,33 +55,6 @@ input[type=submit] {
     border-radius: 100px;
     cursor: pointer;
 }
-
-
-input:nth-of-type(1) {
-    margin-left: 15px !important;
-    margin-right: 5px !important;
-}
-
-input:nth-of-type(2) {
-    margin-left: 15px !important;
-    margin-right: 10px !important;
-}
-
-input:nth-of-type(3) {
-    margin-left: 15px !important;
-    margin-right: 15px !important;
-}
-
-input:nth-of-type(4) {
-    margin-left: 20px !important;
-    margin-right: 20px !important;
-}
-
-input:nth-of-type(5) {
-    margin-left: 25px !important;
-    margin-right: 25px !important;
-}
-
 
 
 
