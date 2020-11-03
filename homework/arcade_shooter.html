@@ -19,11 +19,19 @@ border: 1px solid black;
 
 // Plays music
 
-function music() {
+var isRandom = 0;
+function playsong() {
    var song = document.getElementById("music");;
-   audio.play();
+   song.play();
 }
 
+function addTime(){
+   if((Math.floor(Math.random() * Math.floor(5))) == 0){
+      countdown+=2;
+   }
+
+
+}
 // Get a reference to the canvas DOM element
 var canvas = document.getElementById('canvas');
 // Get the canvas drawing context
@@ -56,6 +64,7 @@ function isWithin(a, b, c) {
 
 // Countdown timer (in seconds)
 var countdown = 30;
+var countDuration = 3;
 // ID to track the setTimeout
 var id = null;
 
@@ -113,12 +122,15 @@ function menu() {
 // Start the game
 function startGame() {
 	// Reduce the countdown timer ever second
-  id = setInterval(function() {
+ id = setInterval(function() {
     countdown--;
+    if(countDuration!=0){
+       countDuration--;
+    }
   }, 1000)
   // Stop listening for click events
   canvas.removeEventListener('click', startGame);
-  music();
+  playsong();
   // Put the target at a random starting point
 	moveTarget();
   // Kick off the draw loop
@@ -184,11 +196,20 @@ function draw() {
       // Respawn the target
       moveTarget();
       // Increase the score
+      addTime();
       score++;
+      countDuration = 3;
+    isRandom =  Math.floor(Math.random() * Math.floor(3));
     }
   }
-  // Draw the square
-  context.fillStyle = '#FF0000';
+  if (countDuration==0){
+    countDuration = 3;
+    score--;
+    moveTarget();
+  }
+    var colors = ['#791aba', '#990012', '#b0e0e6']; 
+    context.fillStyle = colors[isRandom];
+   // Draw the square
   context.fillRect(x, y, sideLength, sideLength);
   // Draw the target 
   context.fillStyle = '#00FF00';
