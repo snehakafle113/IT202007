@@ -11,8 +11,18 @@ border: 1px solid black;
 </head>
 <body>
 <canvas id="canvas" width="600" height="400" tabindex="1">
+<audio autoplay loop id="music">
+   <source src="1-10 2-00 p.m. (Sunny).ogg" type = "audio/ogg">
+</audio>
 <script>
 // Collect The Square game
+
+// Plays music
+
+function music() {
+   var song = document.getElementById("music");;
+   audio.play();
+}
 
 // Get a reference to the canvas DOM element
 var canvas = document.getElementById('canvas');
@@ -108,6 +118,7 @@ function startGame() {
   }, 1000)
   // Stop listening for click events
   canvas.removeEventListener('click', startGame);
+  music();
   // Put the target at a random starting point
 	moveTarget();
   // Kick off the draw loop
