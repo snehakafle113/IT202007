@@ -196,7 +196,7 @@ if (isset($_POST["save"])) {
             do_transaction($world, $source, ($amount * -1), $transType, $memo);
             break;
         case "Transfer":
-            do_transaction($testAcc, $transTo, ($amount * -1), $transType, $memo);
+            do_transaction($world, $transTo, ($amount * -1), $transType, $memo);
             break;    
     }  
 
