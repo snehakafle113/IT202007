@@ -59,10 +59,10 @@ if (isset($_POST["saved"])) {
             //for now we can just stop the rest of the update
             $isValid = false;
         }
-        else if(strlen($username>=5) {
-            $newUsername = $username;
-        }
-        else{
+        else if(strlen($username>=5)) {
+        $newUsername = $username;
+    }
+    else{
             flash("Username must be at least 5 characters long.");
             $isValid = false;
         }
@@ -78,72 +78,70 @@ if (isset($_POST["saved"])) {
         }
         //password is optional, so check if it's even set
         //if so, then check if it's a valid reset request
-        if (!empty($_POST["password"]) && !empty($_POST["confirm"] & !empty($_POST["current"])) {
-            $current = $POST["current"];
+        if (!empty($_POST["password"]) && !empty($_POST["confirm"]) && !empty($_POST["current"])) {
+            $current = $_POST["current"];
             $stmt = $db->prepare("SELECT password from Users WHERE id = :userid");
             $stmt->execute([":userid" => get_user_id()]);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            if($result && isset($result["password"];{
+            if($result && isset($result["password"])){
                 $newHash = $result["password"];
                 if(password_verify($current, $newHash)){
-                    if($POST["password"]== $_POST["confirm"]){
-                        if(strlen($_POST["password"])>=5){
+                    if($_POST["password"]== $_POST["confirm"]) {
+                        if (strlen($_POST["password"]) >= 5) {
 
-                           $password = $_POST["password"];
-                           $hash = password_hash($password, PASSWORD_BCRYPT);
-                           $stmt = $db->prepare("UPDATE Users set password = :password where id = :id");
-                           $r = $stmt->execute([":id" => get_user_id(), ":password" => $hash]);
-                              if ($r) {
-                              flash("Reset Password");
-                       }
-                       else {
-                              flash("Error resetting password");
-                      }
-                   }
-                else if(strlen($_POST["password"])<5){
-                    flash("Password must be at least 5 letters");
+                            $password = $_POST["password"];
+                            $hash = password_hash($password, PASSWORD_BCRYPT);
+                            $stmt = $db->prepare("UPDATE Users set password = :password where id = :id");
+                            $r = $stmt->execute([":id" => get_user_id(), ":password" => $hash]);
+                            if ($r) {
+                                flash("Reset Password");
+                            } else {
+                                flash("Error resetting password");
+                            }
+                        } else if (strlen($_POST["password"]) < 5) {
+                            flash("Password must be at least 5 letters");
+                        } else {
+                            flash("Passwords do not match");
+                        }
+                    }
+                    }
                 }
                 else{
-                    flash("Passwords do not match");
-                }
+                    flash("Please input the correct current password.");
                 }
             }
-            else{
-               flash("Please input the correct current password."); 
-           }
-        }
 //fetch/select fresh data in case anything changed
-        $stmt = $db->prepare("SELECT email, username from Users WHERE id = :id LIMIT 1");
-        $stmt->execute([":id" => get_user_id()]);
-        $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        if ($result) {
-            $email = $result["email"];
-            $username = $result["username"];
-            //let's update our session too
-            $_SESSION["user"]["email"] = $email;
-            $_SESSION["user"]["username"] = $username;
+            $stmt = $db->prepare("SELECT email, username from Users WHERE id = :id LIMIT 1");
+            $stmt->execute([":id" => get_user_id()]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($result) {
+                $email = $result["email"];
+                $username = $result["username"];
+                //let's update our session too
+                $_SESSION["user"]["email"] = $email;
+                $_SESSION["user"]["username"] = $username;
+            }
+        }
+        else {
+            //else for $isValid, though don't need to put anything here since the specific failure will output the message
         }
     }
-    else {
-        //else for $isValid, though don't need to put anything here since the specific failure will output the message
-    }
-}
 
 
-?>
+    ?>
 
     <form method="POST">
-<div style="background: #dbcbbd; font-size: 20px; padding: 10px; border: 1px solid lightgray; margin: 10px;">
-        <label for="email">Email</label>
-        <input type="email" name="email" value="<?php safer_echo(get_email()); ?>"/>
-        <label for="username">Username</label>
-        <input type="text" maxlength="60" name="username" value="<?php safer_echo(get_username()); ?>"/>
-        <!-- DO NOT PRELOAD PASSWORD-->
-        <label for="pw">Password</label>
-        <input type="password" name="password"/>
-        <label for="cpw">Confirm Password</label>
-        <input type="password" name="confirm"/>
-        <input type="submit" name="saved" value="Save Profile"/>
+        <div style="background: #dbcbbd; font-size: 20px; padding: 10px; border: 1px solid lightgray; margin: 10px;">
+            <label for="email">Email</label>
+            <input type="email" name="email" value="<?php safer_echo(get_email()); ?>"/>
+            <label for="username">Username</label>
+            <input type="text" maxlength="60" name="username" value="<?php safer_echo(get_username()); ?>"/>
+            <!-- DO NOT PRELOAD PASSWORD-->
+            <label for="pw">Password</label>
+            <input type="password" name="password"/>
+            <label for="cpw">Confirm Password</label>
+            <input type="password" name="confirm"/>
+            <input type="submit" name="saved" value="Save Profile"/>
     </form>
-</div>
-<?php require(__DIR__ . "/partials/flash.php");
+    </div>
+    <?php require(__DIR__ . "/partials/flash.php");
