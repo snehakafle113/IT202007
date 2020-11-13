@@ -223,13 +223,14 @@ $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 
        <input name="memo" value="<?php echo $result["memo"]; ?>"/>
+<!--
 <label>Action Type</label>
 <select value="<?php echo $result[action_type]; ?>" name="actType">
     <option value="Deposit">Deposit</option>
     <option value="Withdraw">Withdraw</option>
     <option value="Transfer">Transfer</option>
 </select>
-
+-->
 
        <input type="submit" name="save" value="Update"/>
 

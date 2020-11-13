@@ -13,6 +13,8 @@ require_once(__DIR__ . "/../lib/helpers.php");
     <?php if(has_role("Admin")): ?>
         <li><a href="test_create_accounts.php">Create Account</a></li>
         <li><a href="test_list_accounts.php">View Account</a></li>
+        <li><a href="test_create_transactions.php">Create a Transaction</a></li>
+        <li><a href="test_list_transactions.php">View Transactions</a></li>
     <?php endif; ?>
 
     <?php if (is_logged_in()): ?>
