@@ -1,16 +1,6 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
 
 
-
-
-<?php
-if (!has_role("Admin")) {
-    //this will redirect to login and kill the rest of this script (prevent it from executing)
-    flash("You don't have permission to access this page");
-    die(header("Location: login.php"));
-}
-?>
-
 <?php
 $db = getDB();
 $id = get_user_id();
@@ -92,8 +82,15 @@ function withdraw($acc1, $acc2, $amount, $memo){
         flash("Error creating: " . var_export($e, true));
     }
 
-    $stmt = $db->prepare("UPDATE Accounts SET balance = (SELECT SUM(amount) FROM Transactions WHERE Transactions.act_src_id = Accounts.id where id=:id)");
-    $r = $stmt->execute();
+    $stmt = $db->prepare("UPDATE Accounts SET balance = (SELECT ifnull(SUM(amount, 0)) FROM Transactions WHERE Transactions.act_src_id = Accounts.id WHERE id=:id)");
+    $r = $stmt->execute([
+	":balance"=>($acc1Total+$amount),
+	":id"=>$acc1
+    ]);
+    $r = $stmt->execute([
+	":balance"=>($acc2Total-$amount),
+	":id"=>$acc2
+    ]);
 
    return $result;
     }
