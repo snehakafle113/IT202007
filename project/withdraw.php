@@ -50,8 +50,7 @@ function withdraw($acc1, $acc2, $amount, $memo){
     }
     $acc1Total = null;
     $acc2Total= null;
-    $acc1id = null;
-    $acc2id=null;
+
     foreach($results as $r){
         if($acc1 == $r["id"])
             $acc1Total = $r["balance"];
