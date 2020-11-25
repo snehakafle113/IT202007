@@ -5,8 +5,8 @@
 $db = getDB();
 $id = get_user_id();
 $users=[];
-$stmt = $db->prepare("SELECT * from Accounts WHERE user_id = $id");
-$r = $stmt->execute();
+$stmt = $db->prepare("SELECT * from Accounts WHERE user_id = :id");
+$r = $stmt->execute([":id"=>"$id"]);
 
 if($r){
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -50,12 +50,16 @@ function withdraw($acc1, $acc2, $amount, $memo){
     }
     $acc1Total = null;
     $acc2Total= null;
+    $acc1id = null;
+    $acc2id=null;
     foreach($results as $r){
         if($acc1 == $r["id"])
             $acc1Total = $r["balance"];
         if($acc2 == $r["id"])
             $acc2Total = $r["balance"];
     }
+
+
     if($acc1Total+$amount >= 0){
         $query = "INSERT INTO `Transactions` (`act_src_id`, `act_dest_id`, `amount`, `action_type`, `expected_total`, `memo`) VALUES(:p1a1, :p1a2, :p1change, :type, :acc1Total, :memo), (:p2a1, :p2a2, :p2change, :type, :acc2Total, :memo)";
         $stmt = $db->prepare($query);
@@ -82,20 +86,15 @@ function withdraw($acc1, $acc2, $amount, $memo){
         flash("Error creating: " . var_export($e, true));
     }
 
-    $stmt = $db->prepare("UPDATE Accounts SET balance = (SELECT ifnull(SUM(amount, 0)) FROM Transactions WHERE Transactions.act_src_id = Accounts.id WHERE id=:id)");
-    $r = $stmt->execute([
-	":balance"=>($acc1Total+$amount),
-	":id"=>$acc1
-    ]);
-    $r = $stmt->execute([
-	":balance"=>($acc2Total-$amount),
-	":id"=>$acc2
-    ]);
+    $stmt = $db->prepare("UPDATE Accounts SET balance = (SELECT ifnull(SUM(amount, 0)) FROM Transactions WHERE Transactions.act_src_id = :id WHERE id=:id");
+        
+    $r = $stmt->execute([":id"=>$acc1]);
+    $r = $stmt->execute([":id"=>$acc2]);
 
    return $result;
     }
     else{
-        flash("Cannot withdraw: funds are not sufficient");
+        flash("Cannot withdraw: insufficient funds");
     }
 }
 
