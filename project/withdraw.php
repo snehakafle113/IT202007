@@ -93,14 +93,9 @@ function withdraw($acc1, $acc2, $amount, $memo){
     }
 
     $stmt = $db->prepare("UPDATE Accounts SET balance = (SELECT SUM(amount) FROM Transactions WHERE Transactions.act_src_id = Accounts.id where id=:id)");
-    $r = $stmt->execute([
-        ":balance"=>($acc1Total+$amount), ":id"=>$acc1
-    ]);
-    $r = $stmt->execute([
-        ":balance"=>($acc2Total-$amount), ":id"=>$acc2
-    ]);
+    $r = $stmt->execute();
 
-    return $result;
+   return $result;
     }
     else{
         flash("Cannot withdraw: funds are not sufficient");
