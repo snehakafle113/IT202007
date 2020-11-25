@@ -6,22 +6,23 @@ if (!has_role("Admin")) {
     die(header("Location: login.php"));
 }
 ?>
-
+	<label>Account Number:</label>
+	<br>
+	<label>Account Type: Checking</label>
+	</br>
 <form method="POST">
-	<label>Account Number</label>
-	<input type="text" min="12" name="accountNum"/>
-	<label>Account Type</label>
-	<input type = "text" name="accountType"/>
 	<label>Balance</label>
-	<input type="float" min="0.0" name="accountBal"/>
+	<input type="float" min="5.0" name="accountBal"/>
 	<input type="submit" name="save" value="Create"/>
 </form>
 
 <?php
 if(isset($_POST["save"])){
 	//TODO add proper validation/checks
-	$accountNum = $_POST["accountNum"];
-	$accountType = $_POST["accountType"];
+	for($i = 0; $i < 12; $i++) {
+        $accountNum .= mt_rand(0, 9);
+        }
+	$accountType = "Checking";
 	$accountBal = $_POST["accountBal"];
 	$user = get_user_id();
 	$db = getDB();

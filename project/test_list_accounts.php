@@ -46,7 +46,7 @@ if (isset($_POST["search"]) && !empty($query)) {
    $db = getDB();
 
 
-   $stmt = $db->prepare("SELECT id, account_number, account_type, user_id, balance from Accounts WHERE id like :q LIMIT 10");
+   $stmt = $db->prepare("SELECT id, account_number, account_type, user_id, balance from Accounts WHERE id like :q LIMIT 5");
 
 
    $r = $stmt->execute([":q" => "%$query%"]);
@@ -133,17 +133,6 @@ if (isset($_POST["search"]) && !empty($query)) {
 
                    </div>
 
-
-                   <div>
-
-
-                       <div>User ID:</div>
-
-
-                       <div><?php safer_echo($r["user_id"]); ?></div>
-
-
-                   </div>
 
 
                    <div>

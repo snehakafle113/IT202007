@@ -34,6 +34,12 @@ if (isset($_POST["search"]) && !empty($query)) {
         <div class="list-group">
             <?php foreach ($results as $r): ?>
                 <div class="list-group-item">
+		    <div>
+			<br>
+                       <div>Account Number:</div>
+                       <div><?php safer_echo("Working on it"); ?></div>
+                      </div>
+			</br>
                     <div>
                         <div>Transaction Number:</div>
                         <div><?php safer_echo($r["id"]); ?></div>
