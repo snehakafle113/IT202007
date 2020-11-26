@@ -50,8 +50,7 @@ function withdraw($acc1, $acc2, $amount, $memo){
     }
     $acc1Total = null;
     $acc2Total= null;
-    $acc1id = null;
-    $acc2id=null;
+
     foreach($results as $r){
         if($acc1 == $r["id"])
             $acc1Total = $r["balance"];
@@ -86,7 +85,7 @@ function withdraw($acc1, $acc2, $amount, $memo){
         flash("Error creating: " . var_export($e, true));
     }
 
-    $stmt = $db->prepare("UPDATE Accounts SET balance = (SELECT ifnull(SUM(amount, 0)) FROM Transactions WHERE Transactions.act_src_id = :id WHERE id=:id");
+    $stmt = $db->prepare("UPDATE Accounts SET balance = (SELECT ifnull(SUM(amount, 0)) FROM Transactions WHERE Transactions.act_src_id = :id) WHERE id=:id");
         
     $r = $stmt->execute([":id"=>$acc1]);
     $r = $stmt->execute([":id"=>$acc2]);
