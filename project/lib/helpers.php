@@ -73,33 +73,31 @@ function do_transaction($acc1, $acc2, $amount, $memo, $type){
     $stmt2 = $db->prepare("SELECT SUM(amount) as balance FROM Transactions WHERE Transactions.act_src_id = :id");
     $r2 = $stmt2->execute([":id"=>$acc1]);
     $result = $stmt2->fetch(PDO::FETCH_ASSOC);
-    $a1tot = (int)$result["balance"];
+    $acc1Total = (int)$result["balance"];
     $r2 = $stmt2->execute([
         ":id"=>$acc2
     ]);
     $result = $stmt2->fetch(PDO::FETCH_ASSOC);
-    $a2tot = (int)$result["balance"];
+    $acc2Total = (int)$result["balance"];
 
-
-//  if($a1tot+$amountChange >= 0)
-    // {
+    
     $query = "INSERT INTO `Transactions` (`act_src_id`, `act_dest_id`, `amount`, `action_type`, `expected_total`, `memo`) 
-  	VALUES(:p1a1, :p1a2, :p1change, :type, :a1tot, :memo), 
-  			(:p2a1, :p2a2, :p2change, :type, :a2tot, :memo)";
+  	VALUES(:p1a1, :p1a2, :p1change, :type, :acc1Total, :memo), 
+  			(:p2a1, :p2a2, :p2change, :type, :acc2Total, :memo)";
 
     $stmt = $db->prepare($query);
     $stmt->bindValue(":p1a1", $acc1);
     $stmt->bindValue(":p1a2", $acc2);
     $stmt->bindValue(":p1change", $amount);
     $stmt->bindValue(":type", $type);
-    $stmt->bindValue(":a1tot", $a1tot+$amount);
+    $stmt->bindValue(":acc1Total", $acc1Total+$amount);
     $stmt->bindValue(":memo", $memo);
     //flip data for other half of transaction
     $stmt->bindValue(":p2a1", $acc2);
     $stmt->bindValue(":p2a2", $acc1);
     $stmt->bindValue(":p2change", ($amount*-1));
     $stmt->bindValue(":type", $type);
-    $stmt->bindValue(":a2tot", $a2tot-$amount);
+    $stmt->bindValue(":acc2Total", $acc2Total-$amount);
     $stmt->bindValue(":memo", $memo);
     $result = $stmt->execute();
     if ($result) {
@@ -120,6 +118,5 @@ function do_transaction($acc1, $acc2, $amount, $memo, $type){
 
     return $result;
 }
-
 //end flash
 ?>
