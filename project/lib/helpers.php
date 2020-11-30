@@ -67,34 +67,24 @@ function getMessages() {
     return array();
 }
 
-function getTransactionType($t) {
-    switch ($t) {
-        case "Deposit":
-            echo "Deposit";
-            break;
-        case "Withdraw":
-            echo "Withdraw";
-            break;
-        case "Transfer":
-            echo "Transfer";
-            break;
-        default:
-            echo "Not a valid type: " . safer_echo($t);
-            break;
-    }
-}
-
-function do_transaction($acc1, $acc2, $amount, $type, $memo){
+function do_transaction($acc1, $acc2, $amount, $memo, $type){
     $db = getDB();
+    $query = null;
     $stmt2 = $db->prepare("SELECT SUM(amount) as balance FROM Transactions WHERE Transactions.act_src_id = :id");
     $r2 = $stmt2->execute([":id"=>$acc1]);
-    $results = $stmt2->fetch(PDO::FETCH_ASSOC);
-    $acc1Total = (int)$results["balance"];
-    $r2 = $stmt2->execute([":id"=>$acc2]);
-    $results = $stmt2->fetch(PDO::FETCH_ASSOC);
-    $acc2Total = (int)$results["balance"];
+    $result = $stmt2->fetch(PDO::FETCH_ASSOC);
+    $acc1Total = (int)$result["balance"];
+    $r2 = $stmt2->execute([
+        ":id"=>$acc2
+    ]);
+    $result = $stmt2->fetch(PDO::FETCH_ASSOC);
+    $acc2Total = (int)$result["balance"];
 
-    $query = "INSERT INTO `Transactions` (`act_src_id`, `act_dest_id`, `amount`, `action_type`, `expected_total`, `memo`) VALUES(:p1a1, :p1a2, :p1change, :type, :acc1Total, :memo), (:p2a1, :p2a2, :p2change, :type, :acc2Total, :memo)";
+    
+    $query = "INSERT INTO `Transactions` (`act_src_id`, `act_dest_id`, `amount`, `action_type`, `expected_total`, `memo`) 
+  	VALUES(:p1a1, :p1a2, :p1change, :type, :acc1Total, :memo), 
+  			(:p2a1, :p2a2, :p2change, :type, :acc2Total, :memo)";
+
     $stmt = $db->prepare($query);
     $stmt->bindValue(":p1a1", $acc1);
     $stmt->bindValue(":p1a2", $acc2);
@@ -102,7 +92,7 @@ function do_transaction($acc1, $acc2, $amount, $type, $memo){
     $stmt->bindValue(":type", $type);
     $stmt->bindValue(":acc1Total", $acc1Total+$amount);
     $stmt->bindValue(":memo", $memo);
-//second half
+    //flip data for other half of transaction
     $stmt->bindValue(":p2a1", $acc2);
     $stmt->bindValue(":p2a2", $acc1);
     $stmt->bindValue(":p2change", ($amount*-1));
@@ -110,11 +100,9 @@ function do_transaction($acc1, $acc2, $amount, $type, $memo){
     $stmt->bindValue(":acc2Total", $acc2Total-$amount);
     $stmt->bindValue(":memo", $memo);
     $result = $stmt->execute();
-
     if ($result) {
         flash("Created successfully with id: " . $db->lastInsertId());
     }
-
     else {
         $e = $stmt->errorInfo();
         flash("Error creating: " . var_export($e, true));
@@ -130,8 +118,5 @@ function do_transaction($acc1, $acc2, $amount, $type, $memo){
 
     return $result;
 }
-
-
-
 //end flash
 ?>
