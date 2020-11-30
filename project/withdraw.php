@@ -37,9 +37,6 @@ if($r){
     </form>
 
 <?php
-
-
-<?php
 if (isset($_POST["save"])) {
     //TODO add proper validation/checks
     $amount = (float)$_POST["amount"];
