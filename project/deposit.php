@@ -1,5 +1,4 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
-    <div class="shiftRight">
         <?php
         $db = getDB();
         $id = get_user_id();
@@ -50,5 +49,4 @@
             }
         }
         ?>
-    </div>
 <?php require(__DIR__ . "/partials/flash.php");
