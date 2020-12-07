@@ -16,7 +16,6 @@ if($r){
 
     <h3>Create a Withdrawal</h3>
     <form method="POST">
-	<br>
         <label>Select Account </label>
 	 <select name="dest">
             <?php foreach($users as $user): ?>

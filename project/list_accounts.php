@@ -17,6 +17,7 @@
             <?php if (count($result) > 0): ?>
                 <div class="list-group">
                     <?php foreach ($result as $r): ?>
+			<br>
                         <?php if ($r["user_id"] == get_user_id()): ?>
                             <div class="list-group-item">
                                 <div>
