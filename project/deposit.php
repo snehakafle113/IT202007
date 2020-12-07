@@ -28,7 +28,7 @@
             <br>
             <input type="text" placeholder="Optional" name="memo"/>
             <br>
-            <input type="submit" name="save" value="Create"/>
+            <input type="submit" name="save" value="Deposit"/>
         </form>
 
         <?php

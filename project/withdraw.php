@@ -15,10 +15,10 @@ if($r){
 ?>
 
     <h3>Create a Withdrawal</h3>
-
     <form method="POST">
+	<br>
         <label>Select Account </label>
-        <select name="dest">
+	 <select name="dest">
             <?php foreach($users as $user): ?>
                 <?php if($user["user_id"]==$id): ?>
                     <option value="<?= $user['id']; ?>"><?= $user['account_number']; ?></option>
@@ -26,13 +26,14 @@ if($r){
             <?php endforeach; ?>
         </select>
 
-
+	<br> 
         <label>Transaction Amount</label>
         <input type="float" min="0.00" name="amount"/>
+	<br>    
         <label>Memo</label>
         <input type="text" placeholder-"Optional" name="memo"/>
 
-
+	<br>
         <input type="submit" name="save" value="Withdraw"/>
     </form>
 
