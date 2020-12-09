@@ -1,11 +1,13 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
 
     <form method="POST">
+	<br>
         <label>Create a Checking Account</label>
-        <br>
+	<br></br>
         <label>Balance</label>
         <input type="float" min="5.0" name="accountBal"/>
-        <input type="submit" name="save" value="Create"/>
+	<br>        
+	<input type="submit" name="save" value="Create"/>
     </form>
 
 <?php
