@@ -1,14 +1,17 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
 
     <form method="POST">
-<div style="background: #dbcbbd; font-size: 20px; padding: 10px; border: 1px solid lightgray; margin: 10px;">
+	<div class = "form-group">
         <label for="email">Email / Username:</label>
-        <input type="text" id="email" name="email" required/>
-        <label for="p1">Password:</label>
-        <input type="password" id="p1" name="password" required/>
-        <input type="submit" name="login" value="Login"/>
+        <input class = "form-control" type="text" id="email" name="email" required/>
+        </div>
+	<div class = "form-group">
+	<label for="p1">Password:</label>
+        <input class = "form-control" type="password" id="p1" name="password" required/>
+        </div>
+	<input class = "btn btn-primary" type="submit" name="login" value="Login"/>
     </form>
-</div>
+
 <?php
 if (isset($_POST["login"])) {
     $email = null;

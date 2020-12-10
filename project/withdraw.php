@@ -16,24 +16,28 @@ if($r){
 
     <h3>Create a Withdrawal</h3>
     <form method="POST">
+	<div class = "form-group">
         <label>Select Account </label>
-	 <select name="dest">
+	 <select class = "form-control" name="dest">
             <?php foreach($users as $user): ?>
                 <?php if($user["user_id"]==$id): ?>
                     <option value="<?= $user['id']; ?>"><?= $user['account_number']; ?></option>
                 <?php endif; ?>
             <?php endforeach; ?>
         </select>
-
 	<br> 
+	</div>
+	<div class = "form-group">
         <label>Transaction Amount</label>
-        <input type="float" min="0.00" name="amount"/>
+        <input class = "form-control" type="float" min="0.00" name="amount"/>
 	<br>    
+	</div>
+	<div class = "form-group">
         <label>Memo</label>
-        <input type="text" placeholder-"Optional" name="memo"/>
-
+        <input class = "form-control" type="text" placeholder-"Optional" name="memo"/>
 	<br>
-        <input type="submit" name="save" value="Withdraw"/>
+	</div>
+        <input class = "btn btn-primary" type="submit" name="save" value="Withdraw"/>
     </form>
 
 <?php
@@ -56,7 +60,7 @@ if (isset($_POST["save"])) {
 
     if ($amount >= 1) {
         if ($amount < $acc1Total) {
-            do_transaction($dest, $world, ($amount * -1), "Withdraw", $memo);
+            do_transaction($dest, $world, ($amount * -1), $memo, "Withdraw");
         }
         elseif ($amount > $acc1Total){
             flash("Error: Insufficient Funds.");

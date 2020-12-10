@@ -13,28 +13,31 @@ if ($r) {
 
     <h3>Transfer Funds</h3>
     <form method="POST">
-
+	<div class = "form-group">
         <label>Transfer From</label>
-        <select name="AccountSrc">
+        <select class = "form-control" name="AccountSrc">
             <?php foreach($users as $user): ?>
                 <option value="<?= $user['id']; ?>"><?= $user['account_number']; ?></option>
             <?php endforeach; ?>
         </select>
-
+	</div>
+	<div class = "form-group">
         <label>Transfer To</label>
-        <select name="AccountDest">
+        <select class = "form-control" name="AccountDest">
                 <?php foreach($users as $user): ?>
                     <option value="<?= $user['id']; ?>"><?= $user['account_number']; ?></option>
                 <?php endforeach; ?>
         </select>
-
+	</div>
+	<div class = "form-group">
         <label>Transaction Amount</label>
-        <input type="float" min="0.00" name="amount"/>
-
+        <input class = "form-control" type="float" min="0.00" name="amount"/>
+	</div>
+	<div class = "form-group">
         <label>Memo</label>
-        <input type="text" placeholder-"Optional" name="memo"/>
-
-        <input type="submit" name="save" value="Transfer"/>
+        <input class = "form-control" type="text" placeholder-"Optional" name="memo"/>
+	</div>
+        <input class = "btn btn-primary" type="submit" name="save" value="Transfer"/>
 
 
     </form>

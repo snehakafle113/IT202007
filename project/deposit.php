@@ -10,24 +10,30 @@
         }
         ?>
         <h3>Make a Deposit</h3>
-        <form method="POST">
+	 <form method="POST">
+	    <div class = "form-group">
             <label>Select Account</label>
             <br>
-            <select name="source">
+            <select class = "form-control" name="source">
                 <?php foreach($users as $user): ?>
                     <option value="<?= $user["id"]; ?>"><?= $user["account_number"]; ?></option>
                 <?php endforeach; ?>
             </select>
             <br>
+	    </div>
+	    <div class = "form-group">
             <label>Enter Amount</label>
             <br>
-            <input type="float" min="0.00" name="amount"/>
+            <input class = "form-control" type="float" min="0.00" name="amount"/>
             <br>
+	    </div>
+	    <div class = "form-group">
             <label>Memo</label>
             <br>
-            <input type="text" placeholder="Optional" name="memo"/>
+            <input class = "form-control" type="text" placeholder="Optional" name="memo"/>
             <br>
-            <input type="submit" name="save" value="Deposit"/>
+	    </div>
+            <input class = "btn btn-primary" type="submit" name="save" value="Deposit"/>
         </form>
 
         <?php
@@ -42,7 +48,7 @@
             $result=$stmt->fetch();
             $world = $result["id"];
             if ($amount > 0) {
-                do_transaction($world, $source, ($amount * -1), "Deposit", $memo);
+                do_transaction($world, $source, ($amount * -1), $memo, "Deposit");
             }
             else {
                 flash("Error: Amount must be positive.");
