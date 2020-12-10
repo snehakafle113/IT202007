@@ -4,10 +4,12 @@
 	<br>
         <label>Create a Checking Account</label>
 	<br></br>
+	<div class = "form-group">
         <label>Balance</label>
-        <input type="float" min="5.0" name="accountBal"/>
+        <input class = "form-control" type="float" min="5.0" name="accountBal"/>
 	<br>        
-	<input type="submit" name="save" value="Create"/>
+	</div>
+	<input class = "btn btn-primary" type="submit" name="save" value="Create"/>
     </form>
 
 <?php

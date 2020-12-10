@@ -67,6 +67,8 @@ function getMessages() {
     return array();
 }
 
+//function for withdraw, deposit, and transfer
+
 function do_transaction($acc1, $acc2, $amount, $memo, $type){
     $db = getDB();
     $query = null;
@@ -117,6 +119,21 @@ function do_transaction($acc1, $acc2, $amount, $memo, $type){
     ]);
 
     return $result;
+}
+
+//get first and last names of users
+function get_first(){
+	if(is_logged_in() && isset($_SESSION["user"]["first_name"])){
+		return $_SESSION["user"]["first_name"];
+	}
+}
+
+
+function get_last(){
+	if(is_logged_in() && isset($_SESSION["user"]["last_name"])){
+		return $_SESSION["user"]["last_name"];
+	}
+
 }
 //end flash
 ?>

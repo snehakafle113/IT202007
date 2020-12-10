@@ -67,9 +67,20 @@ if (isset($_POST["saved"])) {
             $isValid = false;
         }
     }
+    
+    $newFirstName = get_first();
+    if((get_first() != $_POST["firstName"])){
+	$newFirstName = $_POST["firstName"];
+    }
+
+    $newLastName = get_last();
+    if((get_last() != $_POST["lastName"])){
+	$newLastName = $_POST["lastName"];
+    }
+
     if ($isValid) {
-        $stmt = $db->prepare("UPDATE Users set email = :email, username= :username where id = :id");
-        $r = $stmt->execute([":email" => $newEmail, ":username" => $newUsername, ":id" => get_user_id()]);
+        $stmt = $db->prepare("UPDATE Users set email = :email, username= :username, first_name = :firstName, last_name = :lastName where id = :id");
+        $r = $stmt->execute([":email" => $newEmail, ":username" => $newUsername,":firstName"=> $newFirstName, "lastName"=>$newLastName, ":id" => get_user_id()]);
         if ($r) {
             flash("Updated profile");
         }
@@ -131,15 +142,31 @@ if (isset($_POST["saved"])) {
     ?>
 
     <form method="POST">
+	<div class = "form-group">
             <label for="email">Email</label>
-            <input type="email" name="email" value="<?php safer_echo(get_email()); ?>"/>
-            <label for="username">Username</label>
-            <input type="text" maxlength="60" name="username" value="<?php safer_echo(get_username()); ?>"/>
+            <input class = "form-control" type="email" name="email" value="<?php safer_echo(get_email()); ?>"/>
+        </div>
+	<div class = "form-group">
+	    <label for="username">Username</label>
+            <input class = "form-control" type="text" maxlength="60" name="username" value="<?php safer_echo(get_username()); ?>"/>
+	</div>
+	<div class = "form-group">
+	    <label for="firstName">First Name</label>
+	    <input class = "form-control" type="text" name="firstName" value="<?php safer_echo(get_first()); ?>"/>
+	</div>
+	<div class = "form-group">
+	    <label for="lastName">Last Name</label>
+	    <input class = "form-control" type="text" name="lastName" value="<?php safer_echo(get_last()); ?>"/>
             <!-- DO NOT PRELOAD PASSWORD-->
-            <label for="pw">Password</label>
-            <input type="password" name="password"/>
-            <label for="cpw">Confirm Password</label>
-            <input type="password" name="confirm"/>
-            <input type="submit" name="saved" value="Save Profile"/>
+        </div>
+	<div class = "form-group">
+	    <label for="pw">Password</label>
+            <input class = "form-control" type="password" name="password"/>
+        </div>
+	<div class = "form-group">
+	    <label for="cpw">Confirm Password</label>
+            <input class = "form-control" type="password" name="confirm"/>
+	</div>
+            <input class = "btn btn-primary" type="submit" name="saved" value="Save Profile"/>
     </form>
     <?php require(__DIR__ . "/partials/flash.php");
