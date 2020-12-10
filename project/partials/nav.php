@@ -27,14 +27,14 @@ require_once(__DIR__ . "/../lib/helpers.php");
     <?php endif; ?>
 
     <?php if (is_logged_in()): ?>
-        <li class = "nav-item"><a class = "nav-link" href="create_checking_account.php">Create Account</a></li>
+        <li class = "nav-item"><a class = "nav-link" href="create_checking_account.php">Create Checking Account</a></li>
         <li class = "nav-item"><a class = "nav-link" href="list_accounts.php">Accounts</a></li>
         <li class = "nav-item"><a class = "nav-link" href = "withdraw.php">Withdraw</a></li>
         <li class = "nav-item"><a class = "nav-link" href = "deposit.php">Deposit</a></li>
         <li class = "nav-item"><a class = "nav-link" href="transfer.php">Transfer</a></li>
 	<li class = "nav-item"><a class = "nav-link" href="profile.php">Profile</a></li>
-        <li class = "nav-item"><a class = "nav-link" href="logout.php">Logout</a></li>
 	<li class = "nav-item"><a class = "nav-link" href="external_transfers.php">Transfer Between Users</a></li>
+	<li class = "nav-item"><a class = "nav-link" href="logout.php">Logout</a></li>
     <?php endif; ?>
 </ul>
 </nav>
