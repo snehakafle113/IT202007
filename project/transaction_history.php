@@ -175,7 +175,7 @@ if (isset($id)) {
 
 <h3>Transaction History</h3>
 <div class="results">
-    <label>Filtering Results By:
+    <label>Filtering Results By Type:
         <?php
         if(isset($_SESSION['filtered'])):
             if($_SESSION['filtered']):
@@ -189,7 +189,7 @@ if (isset($id)) {
             echo "All Transactions";
         endif;
         ?>
-
+<br>
         Dates:
 
         <?php
