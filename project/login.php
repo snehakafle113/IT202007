@@ -1,7 +1,8 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
 
+<div style="background: #7f94b2; font-size: 20px; padding: 10px; border: 1px solid lightgray; margin: 10px;">
     <form method="POST">
-	<div class = "form-group">
+	<div class = "form-group" >
         <label for="email">Email / Username:</label>
         <input class = "form-control" type="text" id="email" name="email" required/>
         </div>
@@ -11,7 +12,7 @@
         </div>
 	<input class = "btn btn-primary" type="submit" name="login" value="Login"/>
     </form>
-
+</div>
 <?php
 if (isset($_POST["login"])) {
     $email = null;
