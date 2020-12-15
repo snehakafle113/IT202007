@@ -37,7 +37,7 @@ if(isset($_POST["save"])) {
                 ":accountNum" => $accountNum,
                 ":accountType" => $accountType,
                 ":user" => $user,
-                ":accountBal" => 0
+                ":balance" => $accountBal
             ]);
 
             $error = $stmt->errorInfo();

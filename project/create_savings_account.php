@@ -35,9 +35,8 @@ if(isset($_POST["save"])) {
                 ":accountNum" => $accountNum,
                 ":accountType" => $accountType,
                 ":user" => $user,
-                ":accountBal" => $accountBal,
                 ":APY"=>$APY,
-                ":balance"=>0
+                ":accountBal"=>0
             ]);
             $accountNum = rand(000000000000, 999999999999);
             for ($j = strlen($accountNum); $j < 12; $j++) {
