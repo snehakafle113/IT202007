@@ -10,11 +10,11 @@ if ($r) {
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 ?>
-
+<div style="background: #7f94b2; font-size: 20px; padding: 10px; border: 1px solid lightgray; margin: 10px;">
     <h3>Transfer With Other Users</h3>
     <form method="POST">
         <div class = "form-group">
-            <label>Transfer From</label>
+            <label><b>Transfer From</b></label>
             <select class = "form-control" name="AccountSrc">
                 <?php foreach($users as $user): ?>
                     <option value="<?= $user['id']; ?>"><?= $user['account_number']; ?></option>
@@ -22,7 +22,7 @@ if ($r) {
             </select>
         </div>
         <div class = "form-group">
-            <label>Transfer To</label>
+            <label><b>Transfer To</b></label>
             <br>
             <label>Enter the last 4 digits of the receiving account: </label>
             <input class = "form-control" name = "AccountDest" maxlength = "4">
@@ -32,18 +32,18 @@ if ($r) {
             <input class = "form-control" type = "text" name = "lastName">
         </div>
         <div class = "form-group">
-            <label>Transfer Amount</label>
+            <label><b>Transfer Amount</b></label>
             <input class = "form-control" type="float" min="0.00" name="amount"/>
         </div>
         <div class = "form-group">
-            <label>Memo</label>
+            <label><b>Memo</b></label>
             <input class = "form-control" type="text" placeholder-"Optional" name="memo"/>
         </div>
         <input class = "btn btn-primary" type="submit" name="save" value="Transfer"/>
 
 
     </form>
-
+</div>
 <?php
 
 

@@ -10,7 +10,7 @@ if ($r) {
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 ?>
-
+<div style="background: #7f94b2; font-size: 20px; padding: 10px; border: 1px solid lightgray; margin: 10px;">
     <h3>Transfer Funds</h3>
     <form method="POST">
 	<div class = "form-group">
@@ -41,7 +41,7 @@ if ($r) {
 
 
     </form>
-
+</div>
 <?php
 
 

@@ -9,6 +9,7 @@
             $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
         ?>
+<div style="background: #7f94b2; font-size: 20px; padding: 10px; border: 1px solid lightgray; margin: 10px;">
         <h3>Make a Deposit</h3>
 	 <form method="POST">
 	    <div class = "form-group">
@@ -35,7 +36,7 @@
 	    </div>
             <input class = "btn btn-primary" type="submit" name="save" value="Deposit"/>
         </form>
-
+</div>
         <?php
         if (isset($_POST["save"])) {
             $amount = (float)$_POST["amount"];

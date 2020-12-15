@@ -3,16 +3,18 @@
     <form method="POST">
 <div style="background: #7f94b2; font-size: 20px; padding: 10px; border: 1px solid lightgray; margin: 10px;">
         <br>
-        <label>Create a Checking Account</label>
-        <br></br>
+        <label>Create a Savings Account</label>
+        <br>
+        <label>The APY for this account is 5%.</label>
+        <br>
         <div class = "form-group">
             <label>Balance</label>
             <input class = "form-control" type="float" min="5.0" name="accountBal"/>
             <br>
         </div>
         <input class = "btn btn-primary" type="submit" name="save" value="Create"/>
-</div>    
-	</form>
+</div>
+    </form>
 
 <?php
 if(isset($_POST["save"])) {
@@ -21,31 +23,35 @@ if(isset($_POST["save"])) {
     for ($i = strlen($accountNum); $i < 12; $i++) {
         $accountNum = ("0" . $accountNum);
     }
-    $accountType = "Checking";
+    $accountType = "Savings";
     $user = get_user_id();
     $db = getDB();
     $accountBal = $_POST["accountBal"];
+    $APY= 0.05;
     if ($accountBal >= 5) {
         do {
+            $stmt = $db->prepare("INSERT INTO Accounts(account_number, account_type, user_id, balance, APY) VALUES(:accountNum, :accountType, :user, :accountBal, :APY)");
+            $r = $stmt->execute([
+                ":accountNum" => $accountNum,
+                ":accountType" => $accountType,
+                ":user" => $user,
+                ":APY"=>$APY,
+                ":accountBal"=>0
+            ]);
             $accountNum = rand(000000000000, 999999999999);
             for ($j = strlen($accountNum); $j < 12; $j++) {
                 $accountNum = ("0" . $accountNum);
             }
 
-            $stmt = $db->prepare("INSERT INTO Accounts(account_number, account_type, user_id, balance) VALUES(:accountNum, :accountType, :user, :accountBal)");
-            $r = $stmt->execute([
-                ":accountNum" => $accountNum,
-                ":accountType" => $accountType,
-                ":user" => $user,
-                ":balance" => $accountBal
-            ]);
-
             $error = $stmt->errorInfo();
         } while ($error[0] == "23000");
 
+        $months = 1;
+        $lastId = $db->lastInsertId();
+        $stmt = $db->prepare("UPDATE Accounts set nextAPY = TIMESTAMPADD(MONTH, :months, opened_date) WHERE id = :id");
+        $r = $stmt->execute([":id"=>$lastId, ":months"=>$months]);
         if ($r) {
-            $lastId = $db->lastInsertId();
-            flash("Checking account created successfully: " . $accountNum);
+            flash("Savings account created successfully. Your account number is: " . $accountNum);
         } else {
             $error = $stmt->errorInfo();
             flash("Error creating: " . var_export($error, true));
