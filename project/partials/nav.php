@@ -21,6 +21,7 @@ require_once(__DIR__ . "/../lib/helpers.php");
     <?php endif; ?>
     <?php if(has_role("Admin")): ?>
         <li><a href="create_checking_account.php">Create Account</a></li>
+	<li><a href="create_savings_account.php">Create Checkign Account</a></li>
         <li><a href="list_accounts.php">Accounts</a></li>
         <li><a href = "withdraw.php">Withdraw</a></li>
         <li><a href = "deposit.php">Deposit</a></li>
@@ -29,7 +30,8 @@ require_once(__DIR__ . "/../lib/helpers.php");
 
     <?php if (is_logged_in()): ?>
         <li class = "nav-item"><a class = "nav-link" href="create_checking_account.php">Create Checking Account</a></li>
-        <li class = "nav-item"><a class = "nav-link" href="list_accounts.php">Accounts</a></li>
+        <li class = "nav-item"><a class = "nav-link" href="create_savings_account.php">Create Savings Account</a></li>
+	<li class = "nav-item"><a class = "nav-link" href="list_accounts.php">Accounts</a></li>
         <li class = "nav-item"><a class = "nav-link" href = "withdraw.php">Withdraw</a></li>
         <li class = "nav-item"><a class = "nav-link" href = "deposit.php">Deposit</a></li>
         <li class = "nav-item"><a class = "nav-link" href="transfer.php">Transfer</a></li>

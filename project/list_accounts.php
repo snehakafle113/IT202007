@@ -12,6 +12,7 @@
             flash("There was a problem fetching the results");
         }
         ?>
+<div style="background: #7f94b2; font-size: 20px; padding: 10px; border: 1px solid lightgray; margin: 10px;">
         <h3>Current Accounts</h3>
         <div class="results">
             <?php if (count($result) > 0): ?>
@@ -47,4 +48,5 @@
                 <p>No results</p>
             <?php endif; ?>
     </div>
+</div>
 <?php require(__DIR__ . "/partials/flash.php");

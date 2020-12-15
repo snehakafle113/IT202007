@@ -153,7 +153,8 @@ if(isset($id)) {
     }
 }
 ?>
-
+<div style="background: #7f94b2; font-size: 20px; padding: 10px; border: 1px solid lightgray; margin: 10px;">
+    <h3>Profile</h3>
     <form method="POST">
         <?php if(($vis == 'Public') || ($id == get_user_id())): ?>
         <div class = "form-group">
@@ -193,4 +194,5 @@ if(isset($id)) {
         <input class = "btn btn-primary" type="submit" name="saved" value="Save Profile"/>
     <?php endif;?>
     </form>
+</div>
 <?php require(__DIR__ . "/partials/flash.php");

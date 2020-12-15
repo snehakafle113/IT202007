@@ -13,7 +13,7 @@ if($r){
 }
 
 ?>
-
+<div style="background: #7f94b2; font-size: 20px; padding: 10px; border: 1px solid lightgray; margin: 10px;">
     <h3>Create a Withdrawal</h3>
     <form method="POST">
 	<div class = "form-group">
@@ -39,6 +39,7 @@ if($r){
 	</div>
         <input class = "btn btn-primary" type="submit" name="save" value="Withdraw"/>
     </form>
+</div>
 
 <?php
 if (isset($_POST["save"])) {
