@@ -184,8 +184,8 @@ if(isset($id)) {
             <input class = "form-control" type="password" name="confirm"/>
         </div>
         <div class = "form-group">
+        <label for="privacySetting">Privacy Setting</label>
         <select class = "form-control" name = "privacySetting">
-	<label for="privacySetting">Privacy Setting</label>
             <option value = "Public">Public</option>
             <option value="Private">Private</option>
         </select>
