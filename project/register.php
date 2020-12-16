@@ -54,6 +54,7 @@ if (isset($_POST["register"])) {
             $e = $stmt->errorInfo();
             if ($e[0] == "00000") {
                 flash("Successfully registered! Please login.");
+		die(header("Location: login.php"));
             }
             else {
                 if ($e[0] == "23000") {//code for duplicate entry
