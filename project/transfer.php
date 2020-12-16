@@ -4,7 +4,7 @@
 $db = getDB();
 $id = get_user_id();
 $users = [];
-$stmt = $db->prepare("SELECT * FROM Accounts WHERE user_id = :id");
+$stmt = $db->prepare("SELECT * FROM Accounts WHERE (account_type!='Loan') user_id = :id");
 $r = $stmt->execute([":id" => "$id"]);
 if ($r) {
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -52,8 +52,9 @@ if (isset($_POST["save"])) {
 
 
     $amount = (float)$_POST["amount"];
-
-
+    
+    $account_type = $_POST["account_type"];
+	
     $AccountSrc = $_POST["AccountSrc"];
 
 
@@ -76,8 +77,11 @@ if (isset($_POST["save"])) {
             flash("Error: Insufficient Funds in source account.");
         }
     }
-    else {
-        flash("Please enter a positive value.");
+ 	elseif ($acount_type=="Loan"){
+		flash("Error: Cannot transfer from a loan.");
+	}
+        else {
+            flash("Please enter a positive value.");
     }
 }
 

@@ -1,19 +1,38 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
-
-    <form method="POST">
+<?php
+    $db=getDB();
+    $users = [];
+    $id=get_user_id();
+    $stmt=$db->prepare("SELECT * from Accounts WHERE user_id=:id");
+    $r=$stmt->execute([":id"=>$id]);
+    if($r){
+        $users=$stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+?>
 <div style="background: #7f94b2; font-size: 20px; padding: 10px; border: 1px solid lightgray; margin: 10px;">
+    <form method="POST">
         <br>
-        <label>Create a Checking Account</label>
-        <br></br>
+        <h3>Take Out a Loan</h3>
+        <br>
         <div class = "form-group">
-            <label>Balance</label>
-            <input class = "form-control" type="float" min="5.0" name="accountBal"/>
+	    <p>The APY for this loan is 5%.</p>
+            <label><b>Loan Amount</b></label>
+            <input class = "form-control" type="float" min="500.0" name="accountBal"/>
             <br>
         </div>
+        <div class = "form-grouo">
+            <label><b>Select an Account to Deposit to</b></label>
+	 <select class = "form-control" name="accountSrc">
+            <?php foreach($users as $user): ?>
+                <?php if($user["user_id"]==$id): ?>
+                    <option value="<?= $user['id']; ?>"><?= $user['account_number']; ?></option>
+                <?php endif; ?>
+            <?php endforeach; ?>
+        </select>
+        </div>
         <input class = "btn btn-primary" type="submit" name="save" value="Create"/>
-</div>    
-	</form>
-
+    </form>
+</div>
 <?php
 if(isset($_POST["save"])) {
     //TODO add proper validation/checks
@@ -21,36 +40,39 @@ if(isset($_POST["save"])) {
     for ($i = strlen($accountNum); $i < 12; $i++) {
         $accountNum = ("0" . $accountNum);
     }
-    $accountType = "Checking";
-    $user = get_user_id();
+    $accountType = "Loan";
     $db = getDB();
+    $user = get_user_id();
     $accountBal = $_POST["accountBal"];
-    if ($accountBal >= 5) {
+    $accountBal = (-1)*$accountBal;
+    $APY= 0.05;
+    if ($accountBal >= 500) {
         do {
-            $accountNum = rand(000000000000, 999999999999);
-            for ($j = strlen($accountNum); $j < 12; $j++) {
-                $accountNum = ("0" . $accountNum);
-            }
-
-            $stmt = $db->prepare("INSERT INTO Accounts(account_number, account_type, user_id, balance) VALUES(:accountNum, :accountType, :user, :accountBal)");
+            $stmt = $db->prepare("INSERT INTO Accounts(account_number, account_type, user_id, balance, APY) VALUES(:accountNum, :accountType, :user, :accountBal, :APY)");
             $r = $stmt->execute([
                 ":accountNum" => $accountNum,
                 ":accountType" => $accountType,
                 ":user" => $user,
-                ":accountBal" => $accountBal
+                ":accountBal" => $accountBal,
+                ":APY"=>$APY,
             ]);
+            $accountNum = rand(000000000000, 999999999999);
+            for ($j = strlen($accountNum); $j < 12; $j++) {
+                $accountNum = ("0" . $accountNum);
+            }
 
             $error = $stmt->errorInfo();
         } while ($error[0] == "23000");
 
         if ($r) {
             $lastId = $db->lastInsertId();
-            flash("Checking account created successfully: " . $accountNum);
+            flash("Savings account created successfully. Your account number is: " . $accountNum);
         } else {
             $error = $stmt->errorInfo();
             flash("Error creating: " . var_export($error, true));
         }
 
+        $accountSrc = $_POST["accountSrc"];
         $query = null;
         $stmt2 = $db->prepare("SELECT id, account_number, user_id, account_type, opened_date, last_updated, balance from Accounts WHERE id like :q");
         $r2 = $stmt2->execute([":q" => "%$query%"]);
@@ -58,11 +80,11 @@ if(isset($_POST["save"])) {
             $results = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
         }
-        $acc1Total = null;
+
         foreach($results as $r)
         {
-            if($r["id"] == 0)
-                $acc1Total = $r["balance"];
+            if($r["id"] == $accountSrc)
+                $acc2Total = $r["balance"];
         }
 
         $query = "INSERT INTO `Transactions` (`act_src_id`, `act_dest_id`, `amount`, `action_type`, `expected_total`) 
@@ -70,20 +92,20 @@ if(isset($_POST["save"])) {
 			(:p2a1, :p2a2, :p2change, :type, :acc2Total)";
 
         $stmt = $db->prepare($query);
-        $stmt->bindValue(":p1a1", 0);
-        $stmt->bindValue(":p1a2", $lastId);
-        $stmt->bindValue(":p1change", ($accountBal*-1));
+        $stmt->bindValue(":p1a1", $lastId);
+        $stmt->bindValue(":p1a2", $accountSrc);
+        $stmt->bindValue(":p1change", $accountBal);
         $stmt->bindValue(":type", "Deposit");
-        $stmt->bindValue(":acc1Total", $acc1Total-$accountBal);
+        $stmt->bindValue(":acc1Total", $accountBal);
         //second half
-        $stmt->bindValue(":p2a1", $lastId);
-        $stmt->bindValue(":p2a2", 0);
+        $stmt->bindValue(":p2a1", $accountSrc);
+        $stmt->bindValue(":p2a2", $lastId);
         $stmt->bindValue(":p2change", $accountBal);
         $stmt->bindValue(":type", "Deposit");
-        $stmt->bindValue(":acc2Total", $accountBal);
+        $stmt->bindValue(":acc2Total", $acc2Total+$accountBal);
         $result = $stmt->execute();
         if ($result) {
-            flash("Your transaction was created successfully with id: " . $db->lastInsertId());
+            flash("Loan successfully created.");
         }
         else {
             $e = $stmt->errorInfo();
@@ -95,7 +117,7 @@ if(isset($_POST["save"])) {
     }
     else
     {
-        flash('Balance must be at least $5. Please try again.');
+        flash('Loan must be at least $500. Please try again.');
     }
 
 
