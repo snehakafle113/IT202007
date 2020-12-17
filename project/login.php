@@ -33,7 +33,7 @@ if (isset($_POST["login"])) {
         $db = getDB();
         if (isset($db)) {
             
-            $stmt = $db->prepare("SELECT id, email, username, password, isPrivate, deactivated from Users WHERE email = :email or username = :email LIMIT 1");
+            $stmt = $db->prepare("SELECT id, email, username, password, privacy, deactivated from Users WHERE email = :email or username = :email LIMIT 1");
 
             $params = array(":email" => $email);
             $r = $stmt->execute($params);
@@ -61,7 +61,7 @@ SELECT Roles.name FROM Roles JOIN UserRoles on Roles.id = UserRoles.role_id wher
                     else {
                         $_SESSION["user"]["roles"] = [];
                     }
-                    $_SESSION['user']['isPrivate'] = $result['isPrivate'];
+                    $_SESSION['user']['privacy'] = $result['privacy'];
 
                     if($result['deactivated']=='false') {
                         //on successful login let's serve-side redirect the user to the home page.
