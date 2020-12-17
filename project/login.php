@@ -32,11 +32,9 @@ if (isset($_POST["login"])) {
     if ($isValid) {
         $db = getDB();
         if (isset($db)) {
-<<<<<<< HEAD
+            
             $stmt = $db->prepare("SELECT id, email, username, password, isPrivate, deactivated from Users WHERE email = :email or username = :email LIMIT 1");
-=======
-            $stmt = $db->prepare("SELECT id, email, username, password, isPublic, deactivated from Users WHERE email = :email or username = :email LIMIT 1");
->>>>>>> ea0242cc8931ef580090d32e4fdccdf4246d5c04
+
             $params = array(":email" => $email);
             $r = $stmt->execute($params);
             //echo "db returned: " . var_export($r, true);
@@ -63,11 +61,8 @@ SELECT Roles.name FROM Roles JOIN UserRoles on Roles.id = UserRoles.role_id wher
                     else {
                         $_SESSION["user"]["roles"] = [];
                     }
-<<<<<<< HEAD
                     $_SESSION['user']['isPrivate'] = $result['isPrivate'];
-=======
-                    $_SESSION['user']['isPublic'] = $result['isPublic'];
->>>>>>> ea0242cc8931ef580090d32e4fdccdf4246d5c04
+
                     if($result['deactivated']=='false') {
                         //on successful login let's serve-side redirect the user to the home page.
                         flash("Log in successful");
