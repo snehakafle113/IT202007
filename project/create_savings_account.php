@@ -36,7 +36,7 @@ if(isset($_POST["save"])) {
                 ":accountType" => $accountType,
                 ":user" => $user,
                 ":APY"=>$APY,
-                ":accountBal"=>0
+                ":accountBal"=>$accountBal
             ]);
             $accountNum = rand(000000000000, 999999999999);
             for ($j = strlen($accountNum); $j < 12; $j++) {
@@ -78,15 +78,15 @@ if(isset($_POST["save"])) {
         $stmt = $db->prepare($query);
         $stmt->bindValue(":p1a1", 0);
         $stmt->bindValue(":p1a2", $lastId);
-        $stmt->bindValue(":p1change", ($balance*-1));
+        $stmt->bindValue(":p1change", ($accountBal*-1));
         $stmt->bindValue(":type", "Deposit");
         $stmt->bindValue(":acc1Total", $acc1Total-$accountBal);
         //second half
         $stmt->bindValue(":p2a1", $lastId);
         $stmt->bindValue(":p2a2", 0);
-        $stmt->bindValue(":p2change", $balance);
+        $stmt->bindValue(":p2change", $accountBal);
         $stmt->bindValue(":type", "Deposit");
-        $stmt->bindValue(":acc2Total", $balance);
+        $stmt->bindValue(":acc2Total", $accountBal);
         $result = $stmt->execute();
         if ($result) {
             flash("Your transaction was created successfully with id: " . $db->lastInsertId());
