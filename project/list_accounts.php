@@ -45,9 +45,6 @@
 				    </div>
 				<?php endif;?>
 				</div>
-				<div> Next Date for APY </div>
-				<div><?php safer_echo($r["nextAPY"]);?></div>
-				</div>
                                 <div>
                                     <a type="button" href="transaction_history.php?id=<?php safer_echo($r["id"]); ?>">Transaction History</a>
                                 </div>
