@@ -5,7 +5,7 @@
 $db = getDB();
 $id = get_user_id();
 $users=[];
-$stmt = $db->prepare("SELECT * FROM Accounts WHERE (account_type != 'Loan') AND active = 'active' AND user_id = :id");
+$stmt = $db->prepare("SELECT * FROM Accounts WHERE (account_type != 'Loan') AND active = 'active' AND AND frozen = 'false' AND user_id = :id");
 $r = $stmt->execute([":id"=>"$id"]);
 
 if($r){
