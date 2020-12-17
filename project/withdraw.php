@@ -5,7 +5,7 @@
 $db = getDB();
 $id = get_user_id();
 $users=[];
-$stmt = $db->prepare("SELECT * from Accounts WHERE user_id = :id");
+$stmt = $db->prepare("SELECT * FROM Accounts WHERE (account_type != 'Loan') AND active = 'active' AND user_id = :id");
 $r = $stmt->execute([":id"=>"$id"]);
 
 if($r){
@@ -59,8 +59,8 @@ if (isset($_POST["save"])) {
     $results = $stmt2->fetch(PDO::FETCH_ASSOC);
     $acc1Total = $results["balance"];
 
-    if ($amount >= 1) {
-        if ($amount < $acc1Total) {
+    if ($amount > 0) {
+        if ($amount <= $acc1Total) {
             do_transaction($dest, $world, ($amount * -1), $memo, "Withdraw");
         }
         elseif ($amount > $acc1Total){
