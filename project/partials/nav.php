@@ -38,6 +38,7 @@ require_once(__DIR__ . "/../lib/helpers.php");
         <li class = "nav-item"><a class = "nav-link" href="transfer.php">Transfer</a></li>
 	<li class = "nav-item"><a class = "nav-link" href="profile.php">Profile</a></li>
 	<li class = "nav-item"><a class = "nav-link" href="external_transfers.php">Transfer Between Users</a></li>
+	<li class = "nav-item"><a class = "nav-link" href="close_account.php">Close an Account</a></li>
 	<li class = "nav-item"><a class = "nav-link" href="logout.php">Logout</a></li>
     <?php endif; ?>
 </ul>

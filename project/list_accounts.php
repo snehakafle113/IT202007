@@ -3,7 +3,7 @@
         $query = get_user_id();
         $result = [];
         $db = getDB();
-        $stmt = $db->prepare("SELECT * from Accounts WHERE user_id like :q LIMIT 5");
+        $stmt = $db->prepare("SELECT * from Accounts WHERE active = 'active' AND user_id like :q LIMIT 5");
         $r = $stmt->execute([":q" => "%$query%"]);
         if ($r) {
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
