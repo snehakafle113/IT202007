@@ -5,6 +5,7 @@
     $id=get_user_id();
     $stmt=$db->prepare("SELECT * from Accounts WHERE user_id=:id");
     $r=$stmt->execute([":id"=>$id]);
+
     if($r){
         $users=$stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -17,7 +18,7 @@
         <div class = "form-group">
 	    <p>The APY for this loan is 5%.</p>
             <label><b>Loan Amount</b></label>
-            <input class = "form-control" type="float" min="500.0" name="accountBal"/>
+            <input class = "form-control" type="float" min="5.00" name="accountBal"/>
             <br>
         </div>
         <div class = "form-grouo">
@@ -46,7 +47,7 @@ if(isset($_POST["save"])) {
     $accountBal = $_POST["accountBal"];
     $accountBal = (-1)*$accountBal;
     $APY= 0.05;
-    if ($accountBal >= 500) {
+    if (((-1)*$accountBal) >= 500) {
         do {
             $stmt = $db->prepare("INSERT INTO Accounts(account_number, account_type, user_id, balance, APY) VALUES(:accountNum, :accountType, :user, :accountBal, :APY)");
             $r = $stmt->execute([

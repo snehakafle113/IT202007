@@ -3,13 +3,13 @@
         $query = get_user_id();
         $result = [];
         $db = getDB();
-        $stmt = $db->prepare("SELECT id, account_number, user_id, account_type, opened_date, last_updated, balance from Accounts WHERE user_id like :q LIMIT 5");
+        $stmt = $db->prepare("SELECT * from Accounts WHERE user_id like :q LIMIT 5");
         $r = $stmt->execute([":q" => "%$query%"]);
         if ($r) {
             $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
         else {
-            flash("There was a problem fetching the results");
+            flash("There was a problem fetching the results. Please try again.");
         }
         ?>
 <div style="background: #7f94b2; font-size: 20px; padding: 10px; border: 1px solid lightgray; margin: 10px;">
@@ -37,6 +37,17 @@
                                     <div>Owner</div>
                                     <div><?php safer_echo($r["user_id"]); ?></div>
                                 </div>
+				<div>
+				    <?php if($r["APY"]!=0):?>
+				    <div>
+				       <div>APY:</div>
+				       <div><?php safer_echo(($r["APY"]*100) . "%");?></div>
+				    </div>
+				<?php endif;?>
+				</div>
+				<div> Next Date for APY </div>
+				<div><?php safer_echo($r["nextAPY"]);?></div>
+				</div>
                                 <div>
                                     <a type="button" href="transaction_history.php?id=<?php safer_echo($r["id"]); ?>">Transaction History</a>
                                 </div>
