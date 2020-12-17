@@ -68,16 +68,22 @@ if($r2) {
             <div class="results">
                 <?php if (count($results2) > 0): ?>
                     <div class="list-group">
-                        <?php foreach ($results2 as $res2): ?>
+                        <?php foreach ($results2 as $r2): ?>
+                        <?php if($accountNum == ''): ?>
                             <div class="list-group-item">
                                 <div>
                                     <div>Account Number:</div>
-				    <?php safer_echo($res2['account_number'])?>
+                                    <?php safer_echo($r2['account_number'])?>
                                     <br>
-				    <a type="button" href="transaction_history.php?id=<?php safer_echo($r['id']); ?>">Transaction History</a>
+                                    <a type="button" href="transaction_history.php?id=<?php safer_echo($r2['id']); ?>">Transaction History</a>
                                 </div>
                                 <br>
                             </div>
+                        <?php elseif($r2['account_number'] == $accountNum):?>
+                                <div>Account Number:</div>
+                                <?php safer_echo($r2['account_number']); ?>
+                                <a type="button" href="transaction_history.php?id=<?php safer_echo($r2['id']); ?>">Transaction History</a>
+                        <?php endif;?>
                         <?php endforeach; ?>
                     </div>
                 <?php else: ?>
@@ -92,12 +98,12 @@ if($r2) {
                 <br>
                 <input class = "form-control" type="text" placeholder="Enter First or Last Name" name="name"/>
             </div>
-            <input type="submit" name="searchUser" value="Lookup"/>
+            <input class = "btn btn-primary" type="submit" name="searchUser" value="Lookup"/>
             <br>
             <div class = "form-group">
                 <label>Search Accounts</label>
                 <input class = "form-control" type="int" maxlength="12" placeholder="Account Number" name="accountNum"/>
-                <input type="submit" name="searchAcc" value="Lookup"/>
+                <input  class = "btn btn-primary" type="submit" name="searchAcc" value="Lookup"/>
             </div>
         </form>
 

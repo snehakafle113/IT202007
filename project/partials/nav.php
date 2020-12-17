@@ -20,7 +20,9 @@ require_once(__DIR__ . "/../lib/helpers.php");
         <li class = "nav-item"><a class = "nav-link" href="register.php">Register</a></li>
     <?php endif; ?>
     <?php if(has_role("Admin")): ?>
-	<li class = "nav-item"><a class = "nav-link" href="admin_lookup.php">User/Account Lookup</a></li>
+	<li class = "nav-item"><a class = "nav-link" href="admin_lookup.php">Lookup</a></li>
+	<li class = "nav-item"><a class = "nav-link" href="freeze_account_admin.php">Freeze or Unfreeze an Account</a></li>
+	<li class = "nav-item"><a class = "nav-link" href="adminCreateAccount.php">Create an Account for a User</a></li>
 	<li class = "nav-item"><a class = "nav-link" href="logout.php">Logout</a></li>
     <?php endif; ?>
 
