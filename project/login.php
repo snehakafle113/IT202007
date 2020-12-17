@@ -1,18 +1,18 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
 
-<div style="background: #7f94b2; font-size: 20px; padding: 10px; border: 1px solid lightgray; margin: 10px;">
-    <form method="POST">
-	<div class = "form-group" >
-        <label for="email">Email / Username:</label>
-        <input class = "form-control" type="text" id="email" name="email" required/>
-        </div>
-	<div class = "form-group">
-	<label for="p1">Password:</label>
-        <input class = "form-control" type="password" id="p1" name="password" required/>
-        </div>
-	<input class = "btn btn-primary" type="submit" name="login" value="Login"/>
-    </form>
-</div>
+    <div style="background: #7f94b2; font-size: 20px; padding: 10px; border: 1px solid lightgray; margin: 10px;">
+        <form method="POST">
+            <div class = "form-group" >
+                <label for="email">Email / Username:</label>
+                <input class = "form-control" type="text" id="email" name="email" required/>
+            </div>
+            <div class = "form-group">
+                <label for="p1">Password:</label>
+                <input class = "form-control" type="password" id="p1" name="password" required/>
+            </div>
+            <input class = "btn btn-primary" type="submit" name="login" value="Login"/>
+        </form>
+    </div>
 <?php
 if (isset($_POST["login"])) {
     $email = null;
@@ -32,7 +32,7 @@ if (isset($_POST["login"])) {
     if ($isValid) {
         $db = getDB();
         if (isset($db)) {
-            $stmt = $db->prepare("SELECT id, email, username, password from Users WHERE email = :email or username = :email LIMIT 1");
+            $stmt = $db->prepare("SELECT id, email, username, password, isPublic, deactivated from Users WHERE email = :email or username = :email LIMIT 1");
             $params = array(":email" => $email);
             $r = $stmt->execute($params);
             //echo "db returned: " . var_export($r, true);
@@ -59,9 +59,15 @@ SELECT Roles.name FROM Roles JOIN UserRoles on Roles.id = UserRoles.role_id wher
                     else {
                         $_SESSION["user"]["roles"] = [];
                     }
-                    //on successful login let's serve-side redirect the user to the home page.
-                    flash("Log in successful");
-                    die(header("Location: home.php"));
+                    $_SESSION['user']['isPublic'] = $result['isPublic'];
+                    if($result['deactivated']=='false') {
+                        //on successful login let's serve-side redirect the user to the home page.
+                        flash("Log in successful");
+                        die(header("Location: home.php"));
+                    }
+                    else{
+                        flash("Error: This account is deactivated.");
+                    }
                 }
                 else {
                     flash("Invalid password");
