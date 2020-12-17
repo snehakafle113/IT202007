@@ -31,7 +31,7 @@
                                 </div>
                                 <div>
                                     <div>Account Balance</div>
-                                    <div><?php safer_echo($r["balance"]); ?></div>
+                                    <div><?php safer_echo(abs($r["balance"])); ?></div>
                                 </div>
                                 <div>
                                     <div>Owner</div>

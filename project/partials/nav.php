@@ -20,15 +20,12 @@ require_once(__DIR__ . "/../lib/helpers.php");
         <li class = "nav-item"><a class = "nav-link" href="register.php">Register</a></li>
     <?php endif; ?>
     <?php if(has_role("Admin")): ?>
-        <li><a href="create_checking_account.php">Create Account</a></li>
-	<li><a href="create_savings_account.php">Create Checkign Account</a></li>
-        <li><a href="list_accounts.php">Accounts</a></li>
-        <li><a href = "withdraw.php">Withdraw</a></li>
-        <li><a href = "deposit.php">Deposit</a></li>
-        <li><a href="transfer.php">Transfer</a></li>
+	<li class = "nav-item"><a class = "nav-link" href="admin_lookup.php">User/Account Lookup</a></li>
+	<li class = "nav-item"><a class = "nav-link" href="logout.php">Logout</a></li>
     <?php endif; ?>
 
     <?php if (is_logged_in()): ?>
+	<?php if(!has_role("Admin")):?>
         <li class = "nav-item"><a class = "nav-link" href="create_checking_account.php">Create Checking Account</a></li>
         <li class = "nav-item"><a class = "nav-link" href="create_savings_account.php">Create Savings Account</a></li>
 	<li class = "nav-item"><a class = "nav-link" href="create_loans.php">Take Out a Loan</a></li>
@@ -40,6 +37,7 @@ require_once(__DIR__ . "/../lib/helpers.php");
 	<li class = "nav-item"><a class = "nav-link" href="external_transfers.php">Transfer Between Users</a></li>
 	<li class = "nav-item"><a class = "nav-link" href="close_account.php">Close an Account</a></li>
 	<li class = "nav-item"><a class = "nav-link" href="logout.php">Logout</a></li>
+   	<?php endif;?>
     <?php endif; ?>
 </ul>
 </nav>
