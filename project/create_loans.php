@@ -47,7 +47,7 @@ if(isset($_POST["save"])) {
     $accountBal = $_POST["accountBal"];
     $accountBal = (-1)*$accountBal;
     $APY= 0.05;
-    if (((-1)*$accountBal) >= 500) {
+    if (abs($accountBal) >= 500) {
         do {
             $stmt = $db->prepare("INSERT INTO Accounts(account_number, account_type, user_id, balance, APY) VALUES(:accountNum, :accountType, :user, :accountBal, :APY)");
             $r = $stmt->execute([
@@ -103,7 +103,7 @@ if(isset($_POST["save"])) {
         $stmt->bindValue(":p2a2", $lastId);
         $stmt->bindValue(":p2change", $accountBal);
         $stmt->bindValue(":type", "Deposit");
-        $stmt->bindValue(":acc2Total", $acc2Total+$accountBal);
+        $stmt->bindValue(":acc2Total", $acc2Total+abs($accountBal));
         $result = $stmt->execute();
         if ($result) {
             flash("Loan successfully created.");

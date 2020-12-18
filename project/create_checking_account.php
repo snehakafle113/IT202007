@@ -1,18 +1,18 @@
 <?php require_once(__DIR__ . "/partials/nav.php"); ?>
 
     <form method="POST">
-<div style="background: #7f94b2; font-size: 20px; padding: 10px; border: 1px solid lightgray; margin: 10px;">
-        <br>
-        <label>Create a Checking Account</label>
-        <br></br>
-        <div class = "form-group">
-            <label>Balance</label>
-            <input class = "form-control" type="float" min="5.0" name="accountBal"/>
+        <div style="background: #7f94b2; font-size: 20px; padding: 10px; border: 1px solid lightgray; margin: 10px;">
             <br>
+            <label>Create a Checking Account</label>
+            <br></br>
+            <div class = "form-group">
+                <label>Balance</label>
+                <input class = "form-control" type="float" min="5.0" name="accountBal"/>
+                <br>
+            </div>
+            <input class = "btn btn-primary" type="submit" name="save" value="Create"/>
         </div>
-        <input class = "btn btn-primary" type="submit" name="save" value="Create"/>
-</div>    
-	</form>
+    </form>
 
 <?php
 if(isset($_POST["save"])) {
@@ -52,8 +52,8 @@ if(isset($_POST["save"])) {
         }
 
         $query = null;
-        $stmt2 = $db->prepare("SELECT id, account_number, user_id, account_type, opened_date, last_updated, balance from Accounts WHERE id like :q");
-        $r2 = $stmt2->execute([":q" => "%$query%"]);
+        $stmt2 = $db->prepare("SELECT id, account_number, user_id, account_type, opened_date, last_updated, balance from Accounts");
+        $r2 = $stmt2->execute();
         if ($r2) {
             $results = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
@@ -89,7 +89,7 @@ if(isset($_POST["save"])) {
             $e = $stmt->errorInfo();
             flash("Sorry, there was an error creating: " . var_export($e, true));
         }
-        $stmt = $db->prepare("UPDATE Accounts SET balance = (SELECT SUM(amount) FROM Transactions WHERE Transactions.act_src_id = Accounts.id) where id = :id");
+        $stmt = $db->prepare("UPDATE Accounts SET balance = (SELECT SUM(amount) FROM Transactions WHERE Transactions.act_src_id = Accounts.id) where id=:id");
         $r = $stmt->execute();
         die(header("Location: list_accounts.php"));
     }

@@ -4,7 +4,7 @@
 $db = getDB();
 $id = get_user_id();
 $users = [];
-$stmt = $db->prepare("SELECT * FROM Accounts WHERE user_id = :id");
+$stmt = $db->prepare("SELECT * FROM Accounts WHERE active='active' AND frozen='false' AND user_id = :id");
 $r = $stmt->execute([":id" => "$id"]);
 if ($r) {
     $users = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -78,7 +78,7 @@ if (isset($_POST["save"])) {
     foreach ($results as $result) {
         if ($result["last_name"] == $lastName) {
             $current_user_id = $result["id"];
-            $stmt2 = $db->prepare("SELECT * from Accounts WHERE user_id like :q");
+            $stmt2 = $db->prepare("SELECT * from Accounts WHERE active='active' AND frozen='false' AND user_id like :q");
             $r2 = $stmt2->execute([":q" => "%$current_user_id%"]);
             if ($r) {
                 $results2 = $stmt2->fetchAll(PDO::FETCH_ASSOC);

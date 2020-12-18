@@ -29,7 +29,6 @@ if (isset($_POST["freezeAcc"])) {
     $r = $stmt->execute([":id" => $frozen]);
     if ($r) {
         flash("Account was frozen");
-        die(header("Location: freeze_account_admin.php"));
     }
     else {
         flash("Error updating account");
@@ -42,7 +41,6 @@ if (isset($_POST["unfreezeAcc"])) {
     $r = $stmt->execute([":id" => $not_frozen]);
     if ($r) {
         flash("Account was unfrozen");
-        die(header("Location: adminFreeze.php"));
     }
     else {
         flash("Error updating account");

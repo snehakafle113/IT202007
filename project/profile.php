@@ -19,7 +19,10 @@ if(isset($id)) {
     $stmt->execute([":id" => $id]);
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
     $vis = $result['privacy'];
-
+    $newFirstName = $result['first_name'];
+    $newLastName = $result['last_name'];
+    $newUsername = $result['username'];
+    $isValid = false;
 //save data if we submitted the form
     if (isset($_POST["saved"])) {
         $isValid = true;
@@ -31,7 +34,7 @@ if(isset($id)) {
             $stmt = $db->prepare("SELECT COUNT(1) as InUse from Users where id = :id");
             $stmt->execute([":id" => $id]);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            $inUse = 1;//default it to a failure scenario
+            $inUse = 1; //default it to a failure scenario
             if ($result && isset($result["InUse"])) {
                 try {
                     $inUse = intval($result["InUse"]);
@@ -72,8 +75,9 @@ if(isset($id)) {
                 $isValid = false;
             }
         }
-
-        $newFirstName = get_first();
+	
+        if ($isValid) {
+               $newFirstName = get_first();
         if ((get_first() != $_POST["firstName"])) {
             $newFirstName = $_POST["firstName"];
         }
@@ -88,9 +92,8 @@ if(isset($id)) {
         if (($privacy != $_POST["privacySetting"])) {
             $privacy = $_POST["privacySetting"];
         }
-
-        if ($isValid) {
-            $stmt = $db->prepare("UPDATE Users set email = :email, username= :username, first_name = :firstName, last_name = :lastName, privacy = :privacy where id = :id");
+	
+	    $stmt = $db->prepare("UPDATE Users set email = :email, username= :username, first_name = :firstName, last_name = :lastName, privacy = :privacy where id = :id");
             $r = $stmt->execute([":email" => $newEmail, ":username" => $newUsername, ":firstName" => $newFirstName, ":lastName" => $newLastName, ":privacy" => $privacy, ":id" => get_user_id()]);
             if ($r) {
                 flash("Success! Profile Updated.");
@@ -156,25 +159,38 @@ if(isset($id)) {
 <div style="background: #7f94b2; font-size: 20px; padding: 10px; border: 1px solid lightgray; margin: 10px;">
     <h3>Profile</h3>
     <form method="POST">
-        <?php if(($vis == 'Public') || ($id == get_user_id())): ?>
+        <?php if(($vis == 'Public') && ($id != get_user_id())): ?>
         <div class = "form-group">
             <label for="username">Username</label>
-            <input class = "form-control" type="text" maxlength="60" name="username" value="<?php safer_echo(get_username()); ?>"/>
+            <input class = "form-control" type="text" maxlength="60" name="username" value="<?php safer_echo($result['username']); ?>"/>
         </div>
         <div class = "form-group">
             <label for="firstName">First Name</label>
-            <input class = "form-control" type="text" name="firstName" value="<?php safer_echo(get_first()); ?>"/>
+            <input class = "form-control" type="text" name="firstName" value="<?php safer_echo($result['first_name']); ?>"/>
         </div>
         <div class = "form-group">
             <label for="lastName">Last Name</label>
-            <input class = "form-control" type="text" name="lastName" value="<?php safer_echo(get_last()); ?>"/>
+            <input class = "form-control" type="text" name="lastName" value="<?php safer_echo($result['last_name']); ?>"/>
             <!-- DO NOT PRELOAD PASSWORD-->
         </div>
         <?php endif;?>
         <?php if($id==get_user_id()):?>
+	<div class = "form-group">
+            <label for="username">Username</label>
+            <input class = "form-control" type="text" maxlength="60" name="username" value="<?php safer_echo($result['username']); ?>"/>
+        </div>
+        <div class = "form-group">
+            <label for="firstName">First Name</label>
+            <input class = "form-control" type="text" name="firstName" value="<?php safer_echo($newFirstName); ?>"/>
+        </div>
+        <div class = "form-group">
+            <label for="lastName">Last Name</label>
+            <input class = "form-control" type="text" name="lastName" value="<?php safer_echo($result['last_name']); ?>"/>
+            <!-- DO NOT PRELOAD PASSWORD-->
+        </div>
         <div class = "form-group">
             <label for="email">Email</label>
-            <input class = "form-control" type="email" name="email" value="<?php safer_echo(get_email()); ?>"/>
+            <input class = "form-control" type="email" name="email" value="<?php safer_echo($result['email']); ?>"/>
         </div>
         <div class = "form-group">
             <label for="pw">Password</label>

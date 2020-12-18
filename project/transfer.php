@@ -69,7 +69,7 @@ if (isset($_POST["save"])) {
     $srcTotal = $results["balance"];
 
     if ($amount >= 1) {
-        if ($amount < $srcTotal) {
+        if ($amount <= $srcTotal) {
             do_transaction($AccountSrc, $AccountDest, ($amount * -1), $memo, "Transfer");
         }
         elseif ($amount > $srcTotal){
