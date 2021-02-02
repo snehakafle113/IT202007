@@ -1,5 +1,2 @@
-# IT202007
-## Sneha Kafle
-### This is my change in nano for Homework 1
-
-pull for homework 1
+Simple Bank Project for IT202007
+Fall 2020 Semester
